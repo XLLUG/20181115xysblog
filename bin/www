@@ -4,12 +4,19 @@
  * Module dependencies.
  */
 
+/*
+* 引入 app=express();
+* */
 var app = require('../app');
+/*
+* 日志记录器，通过修改DEBUG的环境变量来改变日志的输出
+* */
 var debug = require('debug')('20181115xysblog:server');
 var http = require('http');
 
 /**
  * Get port from environment and store in Express.
+ * 从环境变量中获取端口并存到express中
  */
 
 var port = normalizePort(process.env.PORT || '3000');

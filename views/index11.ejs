@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/lib/jquery/dist/jquery.min.js"/>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/js/bootstrap.min.js">
+</head>
+<body>
+<p>Welcome to <%= title %></p>
+<div class="container">
+    <table class="table-bordered">
+        <thead >
+          <tr>
+              <th>姓名</th>
+              <th>年龄</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td><%= loginner %></td>
+              <td><%= age %></td>
+          </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
