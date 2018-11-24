@@ -3,7 +3,7 @@ var express = require('express');
 //处理路径
 var path = require('path');
 //处理收藏夹图标
-//var favicon=require('serve-favicon');
+var favicon=require('serve-favicon');
 //解析cookie
 var cookieParser = require('cookie-parser');
 //写日志
@@ -12,6 +12,10 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 //用户路由
 var usersRouter = require('./routes/users');
+//发表文章路由
+var articlesRouter = require('./routes/articles');
+//加密密码
+var password = require('./compent/pasword');
 
 //得到app一个函数
 var app = express();
@@ -26,7 +30,7 @@ app.set('view engine', 'ejs');
 * app.engine('html',require('ejs').__express);
 * */
 //设置图标
-//app.use(favicon(path.join(__dirname,'public','favicon.ico')));
+app.use(favicon(path.join(__dirname,'public','favicon.ico')));
 //日志记录中间件
 app.use(logger('dev'));
 //处理content-type=json的请求体
@@ -36,9 +40,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //静态文件中间件，指定根目录为public
 app.use(express.static(path.join(__dirname, 'public')));
-
+//对密码加密
+app.use(password());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/articles', articlesRouter);
 
 // catch 404 and forward to error handler
 //捕获404错误

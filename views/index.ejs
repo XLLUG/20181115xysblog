@@ -1,11 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<%- include include/header.ejs%>
+<div class="container">
+  <p>Welcome to <%= title %></p>
+  <table class="table">
+    <thead >
+    <tr>
+      <th>姓名</th>
+      <th>年龄</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><%= loginner %></td>
+      <td><%= age %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<%- include include/footer.ejs%>
+
