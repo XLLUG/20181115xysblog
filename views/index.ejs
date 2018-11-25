@@ -1,20 +1,28 @@
 <%- include include/header.ejs%>
 <div class="container">
   <p>Welcome to <%= title %></p>
+  <%
+
+ if(typeof user != 'undefined' && user != null){
+     %>
   <table class="table">
     <thead >
     <tr>
       <th>姓名</th>
-      <th>年龄</th>
+      <th>联系方式</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td><%= loginner %></td>
-      <td><%= age %></td>
+      <td><%= user.username%></td>
+      <td><%= user.email %></td>
     </tr>
     </tbody>
   </table>
+    <%
+ }
+ %>
+
 </div>
 <%- include include/footer.ejs%>
 
