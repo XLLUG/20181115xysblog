@@ -5,7 +5,21 @@ var router = express.Router();
 var acount = require("../compent/accountControl");
 var models = require("../models");
 var articles = models.Articles;
+
+let path = require('path');
 //上传文件
+var multer = require('multer');
+//磁盘存储引擎
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../public/my-uploads')
+    },
+    filename: function (req, file, cb) {
+        console.log(file);
+        cb(null, Date.now()+'.'+file.originalname.slice(file.originalname.indexOf('.')+1))
+    }
+});
+var upload = multer({ storage: storage });
 
 /* GET home page. */
 //只需要写路径的后半部分
@@ -25,9 +39,11 @@ router.get('/add', acount.checkLogin,function(req, res, next) {
   res.render('articles/article', data);
 });
 //存储博客内容
-router.post('/add',acount.checkLogin,function (req, res, next) {
+router.post('/add',acount.checkLogin, upload.single('image'),function (req, res, next) {
     var reqBody = req.body;
     reqBody.user = req.session.user._id;
+    console.log(req.file);
+    reqBody.image = path.join("/my-uploads",req.file.filename);
     articles.create(reqBody,function (error,doc) {
         if(error){
             req.flash("error","发表失败");

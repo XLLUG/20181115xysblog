@@ -21,7 +21,8 @@ var Articles = mongoose.model('articles',new mongoose.Schema({
      user:{type:objectId,ref:'users'},
      title:String,
      content:String,
-     createTime:{type:Date,default:Date.now()}
+     createTime:{type:Date,default:Date.now()},
+     image:String
 }));
 exports.User = User;
 exports.Articles=Articles;
