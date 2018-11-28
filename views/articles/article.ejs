@@ -1,0 +1,19 @@
+<%- include ../include/header.ejs %>
+<!--<%- title %>-->
+<div class="container-fluid xys_margin_top">
+    <form class="form-horizontal" action="/articles/add" method="post">
+        <div class="form-group">
+            <label for="title">标题</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="标题" required>
+        </div>
+        <div class="form-group">
+            <label for="content">正文</label>
+            <textarea class="form-control" name="content" id="content" placeholder="说点什么" rows="10"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">发表博客</button>
+        </div>
+    </form>
+</div>
+<%- include ../include/footer.ejs %>
+

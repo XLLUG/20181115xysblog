@@ -2,10 +2,18 @@ var express = require('express');
 var router = express.Router();
 var models = require("../models");
 var User = models.User;
+var acount = require("../compent/accountControl");
+//加密
+var  MD5 = require('../util').MD5;
 var data = {
     loginner: '薛煜帅',
     age: '24',
-    version: new Date()
+    version: new Date(),
+    active1:"",
+    active2:"",
+    active3:"",
+    active4:"",
+    active5:"",
 };
 
 /* GET users listing. */
@@ -13,12 +21,21 @@ var data = {
 
 /**
  *注册
+ * 将权限控制加到中间
  */
-router.get('/reg', function (req, res, next) {
+router.get('/reg',acount.checkNoLogin,function (req, res, next) {
     data.title = '注册';
+    data.active5='';
+    data.active4='active';
     res.render('users/reg', data);
 });
-router.post('/reg', function (req, res,next) {
+/**
+ * 将权限控制加到中间
+ */
+router.post('/reg',acount.checkNoLogin,function (req, res,next) {
+    //保存头像https://www.gravatar.com/avatar/+MD5加密后的邮箱
+    req.body.avatar = `https://www.gravatar.com/avatar/${MD5(req.body.email)}`;
+
     //保存对象 两种方法 1、model 的create ，entity的save方法
     if (req.body.repassword != req.body.password) {
         req.flash('error','两次输入的密码不一致');
@@ -26,7 +43,6 @@ router.post('/reg', function (req, res,next) {
     } else {
         User.create(req.body, function (error, doc) {
             req.flash('success','注册成功');
-            console.log(doc);
             res.redirect('/users/login');//302  临时重定向
         })
     }
@@ -34,12 +50,15 @@ router.post('/reg', function (req, res,next) {
 });
 /**
  * 登陆
+ * 将权限控制加到中间
  */
-router.get('/login', function (req, res, next) {
+router.get('/login', acount.checkNoLogin,function (req, res, next) {
     data.title = '登陆';
+    data.active5='active';
+    data.active4='';
     res.render('users/login', data);
 });
-router.post('/login', function (req, res, next) {
+router.post('/login',acount.checkNoLogin, function (req, res, next) {
     let userInfo = req.body;
     User.findOne({username: userInfo.username, password: userInfo.password}, function (error, doc) {
         if (error) {
@@ -57,7 +76,7 @@ router.post('/login', function (req, res, next) {
         }
     })
 });
-router.get('/logout', function (req, res, next) {
+router.get('/logout',acount.checkLogin, function (req, res, next) {
     data.title = '退出';
     /*
     * 这里session值一变，数据库中的值跟着就自动更新

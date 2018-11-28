@@ -1,5 +1,5 @@
 <%- include include/header.ejs%>
-<div class="container">
+<!--<div class="container">
   <p>Welcome to <%= title %></p>
   <%
 
@@ -23,6 +23,32 @@
  }
  %>
 
+</div>-->
+<%
+ articles.forEach(function (item) {
+     %>
+<div class="media xys_margin_top">
+    <div class="media-left">
+        <a href="#">
+            <img class="media-object" src="<%=item.user.avatar%>" alt="头像">
+        </a>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading"><%=item.title%></h4>
+        <%- item.content%>
+    </div>
+    <div class="media-bottom">
+        <strong>作者:<%=item.user.username%></strong>
+        发表时间：<%=item.createTime.toLocaleString()%>
+    </div>
 </div>
+<div class="table-bordered"></div>
+
+<%
+ })
+
+
+ %>
+
 <%- include include/footer.ejs%>
 
