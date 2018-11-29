@@ -1,10 +1,9 @@
-<%- include include/header.ejs%>
+<%- include include/header.ejs %>
 <!--<div class="container">
   <p>Welcome to <%= title %></p>
   <%
-
- if(typeof user != 'undefined' && user != null){
-     %>
+if(typeof user != 'undefined' && user != null){
+%>
   <table class="table">
     <thead >
     <tr>
@@ -14,42 +13,90 @@
     </thead>
     <tbody>
     <tr>
-      <td><%= user.username%></td>
+      <td><%= user.username %></td>
       <td><%= user.email %></td>
     </tr>
     </tbody>
   </table>
     <%
- }
- %>
+}
+%>
 
 </div>-->
 <%
- articles.forEach(function (item) {
-     %>
+articles.forEach(function (item) {
+%>
 <div class="media xys_margin_top">
     <div class="media-left">
         <a href="#">
-            <img class="media-object" src="<%=item.user.avatar%>" alt="头像">
+            <img class="media-object" src="<%= item.user.avatar %>" alt="头像">
         </a>
     </div>
     <div class="media-body">
-        <h4 class="media-heading"><%=item.title%></h4>
-        <%- item.content%>
-        <img src="<%=item.image%>" width="30px" height="30px" alt="">
+        <h4 class="media-heading"><%= item.title %></h4>
+        <%- item.content %>
+        <img src="<%= item.image %>" width="30px" height="30px" alt="">
     </div>
     <div class="media-bottom">
-        <strong>作者:<%=item.user.username%></strong>
-        发表时间：<%=item.createTime.toLocaleString()%>
+        <strong>作者:<%= item.user.username %></strong>
+        发表时间：<%= item.createTime.toLocaleString() %>
     </div>
 </div>
 <div class="table-bordered"></div>
 
 <%
- })
+})
+%>
+<%
+if(articles.length!=0){
+%>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="<%= pageNum <= 1 ? "disabled" : "" %>">
+            <%
+            if(pageNum <= 1){
+            %>
+            <span aria-hidden="true">&laquo;</span>
+            <%
+            }else{
+            %>
+            <a href="/?keywords=<%= keywords %>&pageNum=<%= pageNum-1 %>&pageSize=<%= pageSize %>"
+               aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            <%
+            }
+            %>
 
+        </li>
+        <%
+        for(var i = 1;i <= totalPage;i++){
+        %>
+        <li class="<%= pageNum == i ? "active" : "" %>">
+            <a href="/?keywords=<%= keywords %>&pageNum=<%= i %>&pageSize=<%= pageSize %>"><%= i %></a></li>
+        <%
+        }
+        %>
+        <li class="<%= pageNum >= totalPage ? "disabled" : "" %>">
+            <%
+            if(pageNum >= totalPage){
+            %>
+            <span aria-hidden="true">&raquo;</span>
+            <%
+            }else{
+            %>
+            <a href="/?keywords=<%= keywords %>&pageNum=<%= pageNum+1 %>&pageSize=<%= pageSize %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            <%
+            }
+            %>
 
- %>
-
-<%- include include/footer.ejs%>
+        </li>
+    </ul>
+</nav>
+<%
+}
+%>
+<%- include include/footer.ejs %>
 

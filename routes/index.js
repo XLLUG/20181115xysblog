@@ -29,23 +29,44 @@ router.get('/', function(req, res, next) {
     //利用正则来进行匹配，i不区分大小写
     var search = new RegExp(keywords,'i');
 
-    //or查询
-    var option = {$or:[{title:search},{content:search}]};
-
+    //or查询的查询条件
+    var queryObject = {$or:[{title:search},{content:search}]};
     //将查询的关键字放在session中
     req.session.keywords =keywords;
+
+
+
+    /*
+    * 分页功能
+    * */
+    //当前页
+    var pageNum =parseInt(req.query.pageNum) || 1;
+    //每页数目
+    var pageSize = parseInt(req.query.pageSize) || 2;
+    req.session.pageSize = pageSize;
+    req.session.pageNum = pageNum;
+    //跳过查询的数目
+    var skipNum = parseInt((pageNum-1)*pageSize);
     //mongodb 关联查询。
     //先查找，然后将user字符串转换成user对象
-    articles.find(option).populate('user').exec(function (error,doc) {
+    articles.find(queryObject).skip(skipNum).limit(pageSize).populate('user').exec(function (error,doc) {
         //查找出来的集合是一个数组集合
+        console.log(doc);
         doc.forEach(function (article) {
             //将输入的内容转换成markdown的格式
            article.content = markdown.parse(article.content);
         });
-        data.articles=doc;
-        data.keywords = keywords;
+        //查询满足条件的总条数
+        articles.count(queryObject,function (error,count) {
+           data.totalPage = Math.ceil(count/pageSize);
+           data.pageNum =pageNum;
+           data.pageSize = pageSize;
+           data.articles=doc;
+           data.keywords = keywords;
+           res.render('index', data);
+        });
         //console.log(doc);
-        res.render('index', data);
+
     });
     //ejs模板渲染的数据其实是将res.locals对象上的属性 和 res.render('',data)里的data对象合并。可看源码
 

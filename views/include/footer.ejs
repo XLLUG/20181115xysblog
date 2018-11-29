@@ -6,10 +6,10 @@
      $('.w').fadeOut();
  },2000)
     $("#reset").click(function (e) {
+        //阻止冒泡事件和默认事件
         e.stopPropagation();
         e.preventDefault();
         $('#search').val('');
     })
 </script>
-
 </html>
