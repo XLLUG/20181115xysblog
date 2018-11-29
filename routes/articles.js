@@ -5,7 +5,10 @@ var router = express.Router();
 var acount = require("../compent/accountControl");
 var models = require("../models");
 var articles = models.Articles;
-
+/*
+* 日志记录器，通过修改DEBUG的环境变量来改变日志的输出
+* */
+var debug = require('debug')('20181115xysblog:info');
 let path = require('path');
 //上传文件
 var multer = require('multer');
@@ -15,7 +18,7 @@ var storage = multer.diskStorage({
         cb(null, '../public/my-uploads')
     },
     filename: function (req, file, cb) {
-        console.log(file);
+
         cb(null, Date.now()+'.'+file.originalname.slice(file.originalname.indexOf('.')+1))
     }
 });
@@ -42,7 +45,7 @@ router.get('/add', acount.checkLogin,function(req, res, next) {
 router.post('/add',acount.checkLogin, upload.single('image'),function (req, res, next) {
     var reqBody = req.body;
     reqBody.user = req.session.user._id;
-    console.log(req.file);
+    debug('上传文件'+req.file);
     reqBody.image = path.join("/my-uploads",req.file.filename);
     articles.create(reqBody,function (error,doc) {
         if(error){

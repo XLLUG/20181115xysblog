@@ -8,6 +8,7 @@ module.exports = function () {
       res.locals.user = req.session.user;
       res.locals.success =req.flash("success").toString();
       res.locals.error = req.flash("error").toString();
+      res.locals.keywords = req.session.keywords;
       next()
   }
 

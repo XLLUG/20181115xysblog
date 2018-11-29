@@ -5,6 +5,11 @@
     setTimeout(function () {
      $('.w').fadeOut();
  },2000)
+    $("#reset").click(function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('#search').val('');
+    })
 </script>
 
 </html>

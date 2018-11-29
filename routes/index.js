@@ -21,16 +21,30 @@ router.get('/', function(req, res, next) {
         active4:"",
         active5:"",
     };
+    /**
+     * req.query 获取get方法url后面的查询字符串参数
+     * @type {RegExp}
+     */
+    var keywords = req.query.keywords;
+    //利用正则来进行匹配，i不区分大小写
+    var search = new RegExp(keywords,'i');
+
+    //or查询
+    var option = {$or:[{title:search},{content:search}]};
+
+    //将查询的关键字放在session中
+    req.session.keywords =keywords;
     //mongodb 关联查询。
     //先查找，然后将user字符串转换成user对象
-    articles.find({}).populate('user').exec(function (error,doc) {
+    articles.find(option).populate('user').exec(function (error,doc) {
         //查找出来的集合是一个数组集合
         doc.forEach(function (article) {
             //将输入的内容转换成markdown的格式
            article.content = markdown.parse(article.content);
         });
         data.articles=doc;
-        console.log(doc);
+        data.keywords = keywords;
+        //console.log(doc);
         res.render('index', data);
     });
     //ejs模板渲染的数据其实是将res.locals对象上的属性 和 res.render('',data)里的data对象合并。可看源码
