@@ -9,6 +9,8 @@ module.exports = function () {
       res.locals.success =req.flash("success").toString();
       res.locals.error = req.flash("error").toString();
       res.locals.keywords = req.session.keywords;
+      res.locals.pageNum = req.session.pageNum;
+      res.locals.pageSize = req.session.pageSize;
       next()
   }
 
