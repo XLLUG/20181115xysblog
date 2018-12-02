@@ -48,7 +48,7 @@ router.get('/', function(req, res, next) {
     //跳过查询的数目
     var skipNum = parseInt((pageNum-1)*pageSize);
     //mongodb 关联查询。
-    //先查找，然后将user字符串转换成user对象
+    //先查找，然后将user字符串转换成user对象,skip()和limit()里的参数必须为number类型
     articles.find(queryObject).skip(skipNum).limit(pageSize).populate('user').exec(function (error,doc) {
         //查找出来的集合是一个数组集合
         console.log(doc);
